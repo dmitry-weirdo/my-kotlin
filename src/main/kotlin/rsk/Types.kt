@@ -5,6 +5,8 @@ interface Time { // no "public" keyword
 
     fun setTime(time: KevinTime) = // default implementation
         setTime(time.hours)
+
+    fun getString(value: Int): String = "Test string from Time: ${value + 1}"
 }
 
 interface EndOfTheWorld {
@@ -26,4 +28,10 @@ class YetiTime: Time, EndOfTheWorld { // no implements/extends keyword. 2 interf
     override fun setTime(time: KevinTime) { // MUST override even only one method is default
         super<EndOfTheWorld>.setTime(time) // use default from Time
     }
+
+}
+
+fun main() {
+    val time: Time = YetiTime()
+    println("Function in the exp: ${time.getString(777)}")
 }
