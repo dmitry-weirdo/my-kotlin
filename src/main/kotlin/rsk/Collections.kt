@@ -46,8 +46,8 @@ fun main() {
         println(i)
 
     val meetings = listOf(
-        SimpleMeeting(1, "Board Meeting"),
-        SimpleMeeting(2, "Committee Meeting"),
+        SimpleMeeting(1, "Board Meeting", listOf(Person("Sam", "Cook"))),
+        SimpleMeeting(2, "Committee Meeting", listOf(Person("Sam", "Cook"))),
     )
 
     val titles = meetings.map { it.title }
@@ -56,6 +56,23 @@ fun main() {
     println("Meeting titles: ")
     for (title in titles) // type of "title" is auto-calculated
         println(title)
+
+    val people = meetings
+        .flatMap(SimpleMeeting::people) // List<List<Person>> -> List<Person>
+//        .distinct() // works by equals/hashCode which won't be overridden in non-data class
+        .distinctBy(Person::lastName)
+
+    println()
+    println("Distinct people last names: ")
+    for (person in people)
+        println(person.lastName)
 }
 
-class SimpleMeeting(val id: Int, val title: String)
+class SimpleMeeting(val id: Int, val title: String, val people: List<Person>)
+
+// expression function - type of result is inferred
+fun getSum(a: Int, b: Int) = a + b
+
+fun getSum2(a: Int, b: Int): Int { // type for non-expression function is NOT inferred, will be Unit
+    return a + b
+}
